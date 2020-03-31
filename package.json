@@ -1,0 +1,23 @@
+{
+  "name": "easyRQ",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/easyRQ/easyRQ.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/easyRQ/easyRQ/issues"
+  },
+  "homepage": "https://github.com/easyRQ/easyRQ#readme",
+  "devDependencies": {
+    "ansi-colors": "^4.1.1",
+    "gulp": "^4.0.2",
+    "rimraf": "^3.0.2"
+  }
+}
