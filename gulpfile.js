@@ -9,13 +9,18 @@ const rrimraf = require("rimraf");
  */
 let lastAppProcess = null;
 
-const appName = "easyRQ";
-const appBundleName = "easyrq";
+const isWIN32 = process.platform === "win32";
+const appBundleName = isWIN32 ? "easyrq.exe" : "easyrq";
 const appDistDir = "build";
+
+const spawnConfig = {
+  stdio: "inherit",
+  shell: isWIN32 ? "cmd" : false
+};
 
 function buildApp() {
   return spawn("go", ["build", "-i", "-o", `${appDistDir}/${appBundleName}`], {
-    stdio: "inherit",
+    ...spawnConfig,
     cwd: resolve(__dirname, "./packages/cli")
   });
 }
@@ -26,9 +31,7 @@ function runApp(...args) {
     cb => {
       lastAppProcess = spawn(
         resolve(__dirname, "./packages/cli", appDistDir, appBundleName),
-        {
-          stdio: "inherit"
-        }
+        spawnConfig
       );
       cb();
     }
@@ -57,7 +60,7 @@ function appDev(cb) {
 
 function buildUI(cb) {
   spawn("npm", ["run", "build"], {
-    stdio: "inherit",
+    ...spawnConfig,
     cwd: resolve(__dirname, "./packages/webui")
   });
   cb();
@@ -65,7 +68,7 @@ function buildUI(cb) {
 
 function devServer(cb) {
   spawn("npm", ["run", "serve"], {
-    stdio: "inherit",
+    ...spawnConfig,
     cwd: resolve(__dirname, "./packages/webui")
   });
   cb();
@@ -87,6 +90,7 @@ module.exports = {
   buildApp,
   runApp,
   dev: parallel([appDev, devServer]),
+  appDev,
   devServer,
   buildUI,
   clean,
